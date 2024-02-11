@@ -1,0 +1,1 @@
+{"movie_id": "int64", "movie_name": "str", "movie_year": "int64", "duration_min": "int64", "rated": "str", "movie_rating": "float64", "vote_count": "float64", "update_date": "str"}
