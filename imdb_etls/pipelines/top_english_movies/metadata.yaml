@@ -22,7 +22,8 @@ blocks:
   configuration:
     file_source:
       path: transformers/transform_movies_data.py
-  downstream_blocks: []
+  downstream_blocks:
+  - load_top_english_movies
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -35,6 +36,22 @@ blocks:
   upstream_blocks:
   - scrape_top_english_movies
   uuid: transform_movies_data
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: load_top_english_movies
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - transform_movies_data
+  uuid: load_top_english_movies
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
@@ -56,7 +73,7 @@ settings:
 spark_config: {}
 tags: []
 type: python
-updated_at: '2024-02-11 11:02:33'
+updated_at: '2024-02-11 11:11:32'
 uuid: top_english_movies
 variables_dir: /home/src/mage_data/imdb_etls
 widgets: []
