@@ -1,8 +1,11 @@
 blocks:
 - all_upstream_blocks_executed: true
   color: null
-  configuration: {}
-  downstream_blocks: []
+  configuration:
+    file_source:
+      path: data_loaders/scrape_most_popular_movies.py
+  downstream_blocks:
+  - transform_movies_data
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -14,6 +17,24 @@ blocks:
   type: data_loader
   upstream_blocks: []
   uuid: scrape_most_popular_movies
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    file_source:
+      path: transformers/transform_movies_data.py
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: transform_movies_data
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - scrape_most_popular_movies
+  uuid: transform_movies_data
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
@@ -35,7 +56,7 @@ settings:
 spark_config: {}
 tags: []
 type: python
-updated_at: '2024-02-11T10:11:29+00:00'
+updated_at: '2024-02-11 11:02:33'
 uuid: most_popular_movies
 variables_dir: /home/src/mage_data/imdb_etls
 widgets: []

@@ -69,7 +69,7 @@ def load_data(*args, **kwargs):
             yeardiv = movie.find('div', class_='cli-title-metadata')
             year_span = yeardiv.find('span', class_='cli-title-metadata-item')
             year = year_span.text
-            movie_years.append(int(year))
+            movie_years.append(year)
         except:
             movie_years.append(-1)
             missing_data_count['release_year'] += 1
@@ -77,13 +77,8 @@ def load_data(*args, **kwargs):
         try:
             duration_span = yeardiv.find_all('span', class_='cli-title-metadata-item')[1]
             duration_str = duration_span.text
+            durations.append(duration_str)
 
-            # Extracting hours and minutes
-            hours, minutes = map(int, duration_str.replace('h', '').replace('m', '').split())
-
-            # Converting to total minutes
-            total_minutes = hours * 60 + minutes
-            durations.append(total_minutes)
         except:
             durations.append(-1)
             missing_data_count['duration'] += 1
@@ -109,19 +104,7 @@ def load_data(*args, **kwargs):
 
             # Removing parentheses and handling suffixes
             numeric_value_str = votes_str[1:-1]
-            multiplier = 1  # Default multiplier
-
-            if numeric_value_str.endswith('M'):
-                numeric_value_str = numeric_value_str.rstrip('M')
-                multiplier = 1e6  # 1 million
-            elif numeric_value_str.endswith('K'):
-                numeric_value_str = numeric_value_str.rstrip('K')
-                multiplier = 1e3  # 1 thousand
-
-            # Converting to float with the appropriate multiplier
-            numeric_value = float(numeric_value_str) * multiplier
-
-            vote_counts.append(numeric_value)
+            vote_counts.append(numeric_value_str)
 
         except:
             vote_counts.append(-1)
@@ -130,7 +113,7 @@ def load_data(*args, **kwargs):
     print("Data parsing complete. Creating DataFrame...")
 
     # Create a dataframe
-    movie_df = pd.DataFrame({'movie_name': movie_names, 'movie_year': movie_years, 'duration_min': durations, 'rated': rated_values, 'movie_rating': movie_ratings, 'vote_count': vote_counts})
+    movie_df = pd.DataFrame({'movie_name': movie_names, 'movie_year': movie_years, 'movie_duration': durations, 'rated': rated_values, 'movie_rating': movie_ratings, 'vote_count': vote_counts})
 
     # Add movie_id
     movie_df['movie_id'] = movie_df.index + 1
@@ -139,7 +122,7 @@ def load_data(*args, **kwargs):
     movie_df['update_date'] = datetime.datetime.today().strftime('%Y-%m-%d')
 
     # reorder columns
-    movie_df = movie_df[['movie_id', 'movie_name', 'movie_year', 'duration_min', 'rated', 'movie_rating', 'vote_count', 'update_date']]
+    movie_df = movie_df[['movie_id', 'movie_name', 'movie_year', 'movie_duration', 'rated', 'movie_rating', 'vote_count', 'update_date']]
 
     # Count rows inserted
     rows_inserted = len(movie_df)
